@@ -8,11 +8,14 @@ namespace ProjectEulerHelperClasses
     public class PrimeNumberCalculator
     {
         static LinkedList<Int64> primes;
+        static HashSet<Int64> primeHash;
         static long highestChecked;
         public static void Reset()
         {
             primes = new LinkedList<long>();
             primes.AddLast(2);
+            primeHash = new HashSet<long>();
+            primeHash.Add(2);
             highestChecked = 2;
         }
         public static void FindPrimesLowerThan(Int64 limit)
@@ -22,18 +25,30 @@ namespace ProjectEulerHelperClasses
             {
                 FindPrimesLowerThan((Int64)Math.Sqrt((double) limit));
             }
-            var result = Parallel.For(highestChecked+1,limit+1,(i, state) => {
-                if (IsPrime(i)) { newprimes.Add(i); }
-                    });
-            newprimes.Sort();
-            foreach(long prime in newprimes)
+            bool[] primearray = new bool[limit - highestChecked];
+            var result = Parallel.For(highestChecked + 1L, limit + 1L, (i, state) =>
+                  {
+                      primearray[i - highestChecked - 1L] = IsPrime(i);
+                  });
+            for (int i = 0; i<primearray.Length; i++)
             {
-                primes.AddLast(prime);
+                if (primearray[i])
+                {
+                    primes.AddLast(i + highestChecked + 1);
+                    primeHash.Add(i + highestChecked + 1);
+                }
+            }
+            foreach(bool isprime in primearray)
+            {
+                if (isprime)
+                {
+                    
+                }
             }
             highestChecked = limit;
         }
         public static LinkedList<long> GetPrimes() { return primes; }
-        static bool IsPrime(long i)
+        static private bool IsPrime(long i)
         {
             bool isprime = true;
             foreach (long j in primes)
@@ -41,6 +56,10 @@ namespace ProjectEulerHelperClasses
                 if ((i % j) == 0) { isprime = false; break; }
             }
             return isprime;
+        }
+        static public bool IsPrimeLookup(long i)
+        {
+            return primeHash.Contains(i);
         }
     }
 }

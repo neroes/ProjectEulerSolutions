@@ -40,5 +40,14 @@ namespace UnitTestProject1
             LinkedList<long> result = PrimeNumberCalculator.GetPrimes();
             CollectionAssert.AreEqual(expected, result);
         }
+        [TestMethod]
+        public void PrimeNumberCalculatorLookupTest()
+        {
+            PrimeNumberCalculator.Reset();
+            PrimeNumberCalculator.FindPrimesLowerThan(1000000L);
+            bool[] expected = { true, true, false, true, false, false };
+            bool[] result = { PrimeNumberCalculator.IsPrimeLookup(3), PrimeNumberCalculator.IsPrimeLookup(7919), PrimeNumberCalculator.IsPrimeLookup(7921), PrimeNumberCalculator.IsPrimeLookup(7919), PrimeNumberCalculator.IsPrimeLookup(8), PrimeNumberCalculator.IsPrimeLookup(7905) };
+            CollectionAssert.AreEqual(expected, result);
+        }
     }
 }

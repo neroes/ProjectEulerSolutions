@@ -68,7 +68,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestProblem09()
         {
-            long result = ProjectEuler001_100.Problem009(25);
+            long result = ProjectEuler001_100.Problem009(12);
             long expected = 60L;
             Assert.AreEqual(expected, result);
         }

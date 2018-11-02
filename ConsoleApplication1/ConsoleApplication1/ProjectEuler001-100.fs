@@ -67,7 +67,17 @@ let Problem004 = // needs to be made recursive to be modifiable for different si
         found)|> ignore
     res
 let Problem005 highestnum =
-    let res = 0L
+    let primefactorcounts = [| for i in 1..highestnum -> 0|]
+    for i in 1..highestnum do
+        let primefactors = GetPrimeFactor(i|>int64)
+        let count = CountNumbers(primefactors,i)
+        for j in 0..i-1 do
+            if (primefactorcounts.[j] < count.[j]) then
+                primefactorcounts.[j] <- count.[j]
+    let mutable res = 1L
+    for i in 0..highestnum-1 do
+        for j in 1..primefactorcounts.[i] do
+            res <- res*(i+1|>int64)
     res
 let Problem006 highestnum =
     let sumsq = (Array.sum([|for i in 1..highestnum -> i |])|> float)**2.0
@@ -102,7 +112,7 @@ let Problem010 maxprimesize =
 let Problem011 (numberset, numbers) =
     let res = 0L
     res
-let Problem088 amount =
+let Problem088 amount = // make it only look at prime numbers instead of brute forcing
     let mutable target = 2L
     let mutable lasttarget = 2L
     let mutable res = 0L

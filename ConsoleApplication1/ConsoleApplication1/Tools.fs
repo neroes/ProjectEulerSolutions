@@ -56,6 +56,11 @@ let GetPrimeFactor (largenumber:int64) =
         if (remsum < primes.Last.Value) then dontbreak <- false
     primefactors
 
+let CountNumbers (numbersToCount:list<int64>,highestNum) =
+    let mutable numberCounts = [| for i in 1..highestNum -> 0|]
+    for number in numbersToCount do
+        numberCounts.[(number-1L)|>int] <- numberCounts.[(number-1L)|>int] + 1
+    numberCounts
 let rec FindMultiplicatesHelper (currentmulti:int64,primes,max:int64,combinations:LinkedList<int64>) = 
     let mutable combinations2 = combinations
     if (currentmulti < max) then
