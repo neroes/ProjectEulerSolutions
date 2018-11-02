@@ -2,11 +2,17 @@
 
 open System.Collections.Generic
 open System
+open ProjectEulerHelperClasses
 
 let inline arrayProduct (a:seq<int>) = 
     let mutable product = 1L
     for i in a do
         product <- product * (i |> int64)
+    product
+let inline array64Product (a:seq<int64>) = 
+    let mutable product = 1L
+    for i in a do
+        product <- product * (i)
     product
 let getNextPrime (primes:LinkedList<int64>) =
     let mutable dontbreak = true
@@ -61,3 +67,20 @@ let FindMultiplicates (primes,max:int64) =
     let mutable currentmulti = 1L
     let mutable combinations:LinkedList<int64> = new LinkedList<int64>()
     FindMultiplicatesHelper(currentmulti,primes,max,combinations)
+
+let rec Problem88Helper (numbers:list<int64>,target:int64, numbersleft:int64, currentnumber:int64):bool = 
+    let mutable res = false
+    let mutable newnumbers = []
+    if (numbersleft = 1L) then 
+        newnumbers <- numbers @ [target - Seq.sum(numbers)]
+        if (array64Product(newnumbers) = target) then
+            if (not (ProductSumNumber.lookup.ContainsKey(target))) then
+                ProductSumNumber.lookup.Add(target, new ProductSumNumber(target,ResizeArray<Int64> newnumbers));
+            res <- true
+    else 
+        seq {currentnumber..(target - Seq.sum(numbers))/numbersleft} |> Seq.tryFind (fun i ->
+            let result = Problem88Helper (numbers @ [i] ,target, numbersleft-1L, i)
+            if (result) then
+                res <- true
+            res)|>ignore
+    res

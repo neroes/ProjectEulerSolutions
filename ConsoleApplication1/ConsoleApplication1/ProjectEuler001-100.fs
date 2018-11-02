@@ -1,6 +1,9 @@
 ﻿module ProjectEuler001_100
 open System.Collections.Generic
 open EulerProjectTools
+open ProjectEulerHelperClasses
+open System
+
 
 let Problem001 (max:int,multipliers:list<int>) = 
     let mutable rotationsize = 1;
@@ -43,7 +46,7 @@ let Problem002 (modulus:int,max:int) =
 let Problem003 (largenumber:int64) =
     let primefactors = EulerProjectTools.GetPrimeFactor(largenumber)
     primefactors.Head
-let Problem004 =
+let Problem004 = // needs to be made recursive to be modifiable for different sizes
     let pal (a,b,c) =
         a*100000+b*10000+c*1000+c*100+b*10+a*1|>int64
     let mutable found = false
@@ -84,6 +87,9 @@ let Problem008 (numberlist:string,numofmulti:int) =
         if (tmpsum>maxsum) then 
             maxsum <- tmpsum
     maxsum
+let Problem009 (fullnumber:int) =
+    let res = 0L
+    res
 let Problem010 maxprimesize =
     let mutable primes:LinkedList<int64> = new LinkedList<int64>()
     let mutable nextPrime:int64 = 2L
@@ -93,16 +99,25 @@ let Problem010 maxprimesize =
         sum <- sum + nextPrime
         nextPrime <- getNextPrime(primes)
     sum 
-let Problem088 amount =
-    let mutable amountfound = 0
-    let mutable prodSumNum:list<int64> = []
-    let mutable i = 2L
-    while (amountfound < amount) do
-        if (true) then// needs better statement
-            prodSumNum <- [i] @ prodSumNum
-            amountfound <- amountfound + 1
-    i <- i + 1L
+let Problem011 (numberset, numbers) =
     let res = 0L
+    res
+let Problem088 amount =
+    let mutable target = 2L
+    let mutable lasttarget = 2L
+    let mutable res = 0L
+    let mutable i = 2L
+    while (i < amount) do
+        while (not (Problem88Helper([],target, i, 1L))) do
+            target <- target + 1L
+        if (target <> lasttarget) then
+            res <- res + target
+        let tmpi = (ProductSumNumber.lookup.[target].Expander().Count |>int64) + 1L
+        if (tmpi > i) then
+            i <- tmpi
+        else
+            i <- i + 1L
+        lasttarget <- target
     res
 let loadProblem001To100 (index:int) = 
     match index with
@@ -114,5 +129,8 @@ let loadProblem001To100 (index:int) =
     | 6 -> Problem006(100)
     | 7 -> Problem007(10001)
     | 8 -> Problem008("7316717653133062491922511967442657474235534919493496983520312774506326239578318016984801869478851843858615607891129494954595017379583319528532088055111254069874715852386305071569329096329522744304355766896648950445244523161731856403098711121722383113622298934233803081353362766142828064444866452387493035890729629049156044077239071381051585930796086670172427121883998797908792274921901699720888093776657273330010533678812202354218097512545405947522435258490771167055601360483958644670632441572215539753697817977846174064955149290862569321978468622482839722413756570560574902614079729686524145351004748216637048440319989000889524345065854122758866688116427171479924442928230863465674813919123162824586178664583591245665294765456828489128831426076900422421902267105562632111110937054421750694165896040807198403850962455444362981230987879927244284909188845801561660979191338754992005240636899125607176060588611646710940507754100225698315520005593572972571636269561882670428252483600823257530420752963450",13)
+    | 9 -> Problem009(1000)
     | 10 -> Problem010(2000000L)
+    | 11 -> Problem011([10,20],4)
+    | 88 -> Problem088(12000L)
     | _ -> 0L
