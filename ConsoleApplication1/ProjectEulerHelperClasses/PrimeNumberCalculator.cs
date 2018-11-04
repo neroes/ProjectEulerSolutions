@@ -14,8 +14,7 @@ namespace ProjectEulerHelperClasses
         {
             primes = new LinkedList<long>();
             primes.AddLast(2);
-            primeHash = new HashSet<long>();
-            primeHash.Add(2);
+            primeHash = new HashSet<long>{2};
             highestChecked = 2;
         }
         public static void FindPrimesLowerThan(Int64 limit)
@@ -36,13 +35,6 @@ namespace ProjectEulerHelperClasses
                 {
                     primes.AddLast(i + highestChecked + 1);
                     primeHash.Add(i + highestChecked + 1);
-                }
-            }
-            foreach(bool isprime in primearray)
-            {
-                if (isprime)
-                {
-                    
                 }
             }
             highestChecked = limit;
